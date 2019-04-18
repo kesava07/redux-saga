@@ -1,28 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { connect } from 'react-redux';
+import * as actions from './ReduxStore/Actions/index';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <h1>SAGA</h1>
+        <button onClick={this.props.getApiData} disabled={this.props.data.length > 0}>GET DATA</button>
+        {
+          this.props.data && this.props.data.map(val => (
+            <React.Fragment key={val.id}>
+              <h3>{val.name}</h3>
+            </React.Fragment>
+          ))
+        }
       </div>
     );
   }
-}
+};
 
-export default App;
+const mapDispacthToProps = state => ({
+  data: state.data
+})
+
+const mapDispatchToProps = dispatch => ({
+  getApiData: () => dispatch(actions.getData())
+});
+
+export default connect(mapDispacthToProps, mapDispatchToProps)(App);
