@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Axios from 'axios';
 import TableData from './Table';
+import Header from './Header';
 
 export default class NodeApp extends Component {
     state = {
@@ -10,7 +11,8 @@ export default class NodeApp extends Component {
         fetchedData: [],
         loading: false,
         update: false,
-        updateId: null
+        updateId: null,
+        updateText: ""
     }
     componentDidMount() {
         this.getData()
@@ -53,9 +55,10 @@ export default class NodeApp extends Component {
                 })
         } else {
             alert("Please enter something")
+            this.setState({ disabled: false })
         }
     }
-    handleOnCHnage = event => this.setState({ inputText: event.target.value });
+    handleOnCHnage = event => this.setState({ inputText: event.target.value.trimStart() });
 
 
     handleDelete = data => {
@@ -72,7 +75,7 @@ export default class NodeApp extends Component {
     }
 
     handleUpdate = data => {
-        this.setState({ update: true, updateId: data.id, inputText: data.name })
+        this.setState({ update: true, updateId: data.id, inputText: data.name, updateText: data.name })
     }
 
     handleSubmit = id => {
@@ -84,21 +87,34 @@ export default class NodeApp extends Component {
             }
             Axios.put(`https://sample-auth-7c2db.firebaseio.com/curdOperations/${id}.json`, data)
                 .then(res => {
-                    this.setState({ disabled: false, inputText: "", update: false, updateId: null })
+                    this.setState({ disabled: false, inputText: "", update: false, updateId: null, updateText: "" })
                     console.log("posted successfully")
                     window.location.reload();
                 })
                 .catch(err => {
-                    this.setState({ error: err, disabled: false, inputText: "", update: false, updateId: null })
+                    this.setState(
+                        {
+                            error: err,
+                            disabled: false,
+                            inputText: "",
+                            update: false,
+                            updateId: null,
+                            updateText: ""
+                        }
+                    )
                 })
         } else {
             alert("Please enter something")
         }
+    };
+    handleCancel = () => {
+        this.setState({ inputText: "", update: false, updateId: null, updateText: "" })
     }
     render() {
         const { inputText, disabled, fetchedData, loading, update, updateId } = this.state;
         return (
             <div className="container-fluid">
+                <Header />
                 <div className="jumbotron py-3 mt-3">
                     <h1 className="text-center">CRUD operations</h1>
                 </div>
@@ -122,7 +138,15 @@ export default class NodeApp extends Component {
 
                                 </div>
                                 <div className="col-md-2 p-0">
-                                    {update ? <button disabled={disabled} className="btn btn-success" onClick={() => this.handleSubmit(updateId)}>Update</button>
+                                    {update ?
+                                        <span>
+                                            <button disabled={inputText === this.state.updateText} className="btn btn-success" onClick={() => this.handleSubmit(updateId)}>
+                                                <i className="fa fa-check" aria-hidden="true"></i>
+                                            </button>
+                                            <button disabled={disabled} className="btn btn-danger ml-1" onClick={this.handleCancel}>
+                                                <i className="fa fa-times" aria-hidden="true"></i>
+                                            </button>
+                                        </span>
                                         :
                                         <button disabled={disabled} className="btn btn-primary" onClick={this.handlePostData}>Add</button>}
                                 </div>

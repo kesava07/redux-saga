@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import './App.css';
 import { connect } from 'react-redux';
 import * as actions from './ReduxStore/Actions/index';
+import Header from './Components/Header';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
+        <Header />
         <h1>SAGA</h1>
-        <button onClick={this.props.getApiData} disabled={this.props.data.length > 0}>GET DATA</button>
+        <button className="btn btn-lg btn-success" onClick={this.props.getApiData} disabled={this.props.data.length > 0}>GET DATA</button>
         {this.props.loading ? <h1>Loading...</h1> : null}
         {
           this.props.data && this.props.data.map(val => (

@@ -20,10 +20,10 @@ const TableData = (props) => {
                                 <td>{val.date}</td>
                                 <td>
                                     <button className="btn btn-sm btn-danger mr-2" onClick={() => handleDelete(val)}>
-                                        <i className="fa fa-trash fa-spin"></i>
+                                        <i className="fa fa-trash"></i>
                                     </button>
                                     <button className="btn btn-sm btn-primary" onClick={() => handleUpdate(val)}>
-                                        <i className="fa fa-pencil fa-spin"></i>
+                                        <i className="fa fa-pencil"></i>
                                     </button>
                                 </td>
                             </tr>)
