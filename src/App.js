@@ -9,6 +9,7 @@ class App extends Component {
       <div className="App">
         <h1>SAGA</h1>
         <button onClick={this.props.getApiData} disabled={this.props.data.length > 0}>GET DATA</button>
+        {this.props.loading ? <h1>Loading...</h1> : null}
         {
           this.props.data && this.props.data.map(val => (
             <React.Fragment key={val.id}>
@@ -22,7 +23,8 @@ class App extends Component {
 };
 
 const mapDispacthToProps = state => ({
-  data: state.data
+  data: state.data,
+  loading: state.loading
 })
 
 const mapDispatchToProps = dispatch => ({
