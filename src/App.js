@@ -4,11 +4,15 @@ import { connect } from 'react-redux';
 import * as actions from './ReduxStore/Actions/index';
 import Header from './Components/Header';
 
+
 class App extends Component {
   render() {
     return (
       <div className="App">
         <Header />
+        <div>
+          <h1></h1>
+        </div>
         <h1>SAGA</h1>
         <button className="btn btn-lg btn-success" onClick={this.props.getApiData} disabled={this.props.data.length > 0}>GET DATA</button>
         {this.props.loading ? <h1>Loading...</h1> : null}
